@@ -30,7 +30,6 @@ class _StartUpState extends State<StartUp> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: 100.0),
-        color: Colors.purple,
         child: Column(
           children: <Widget>[
             Container(
@@ -60,13 +59,6 @@ class _StartUpState extends State<StartUp> {
                 ),
               ),
             ),
-//            dragTargetVisible
-//                ? Container(
-//                    height: 200.0,
-//                    width: 200.0,
-//                    color: Colors.black,
-//                  )
-//                : SizedBox(),
             dragTarget(),
           ],
         ),
@@ -80,7 +72,7 @@ class _StartUpState extends State<StartUp> {
         affinity: Axis.vertical,
         child: containerWidget(scale, index),
         feedback: containerWidget(scale, index),
-        data: index,
+        data: index.toString(),
         childWhenDragging: Opacity(
           opacity: 0.0,
           child: containerWidget(scale, index),
@@ -113,6 +105,7 @@ class _StartUpState extends State<StartUp> {
     return Flexible(
       child: DragTarget(
         onAccept: (data) {
+          print(data);
           print("accepted");
           setState(() {
             dragTargetVisible = false;
@@ -126,20 +119,16 @@ class _StartUpState extends State<StartUp> {
         },
         onWillAccept: (data) {
           print("onWillAccept");
-          setState(() {
-            dragTargetVisible = false;
-          });
-          return data == page.floor() ? true: false;
+          return data.toString() == page.floor().toString() ? true : false;
         },
-        builder: (BuildContext context, List<String> a,b){
+        builder: (BuildContext context, List<String> a, b) {
           return Visibility(
             visible: dragTargetVisible,
             child: Container(
               width: SizeConfig.screenWidth,
               child: Opacity(
-                opacity: 1,
+                opacity: 0,
                 child: Container(
-                  color: Colors.white,
                   height: 200.0,
                   width: SizeConfig.screenWidth,
                 ),
@@ -168,7 +157,6 @@ class _StartUpState extends State<StartUp> {
           ),
         ),
         onTap: () {
-          ;
           controller.scrollToIndex(index,
               preferPosition: AutoScrollPosition.middle,
               duration: Duration(milliseconds: 600));
