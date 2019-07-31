@@ -46,7 +46,7 @@ class _StartUpState extends State<StartUp> {
                   itemCount: 10,
                   controller: controller,
                   scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
+                  physics: dragTargetVisible? NeverScrollableScrollPhysics(): BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     final scale = max(SCALE_FRACTION,
                         (FULL_SCALE - (index - page).abs()) + 0.8);
@@ -113,9 +113,9 @@ class _StartUpState extends State<StartUp> {
         },
         onLeave: (data) {
           print("leave");
-          setState(() {
-            dragTargetVisible = false;
-          });
+//          setState(() {
+//            dragTargetVisible = false;
+//          });
         },
         onWillAccept: (data) {
           print("onWillAccept");
@@ -157,9 +157,11 @@ class _StartUpState extends State<StartUp> {
           ),
         ),
         onTap: () {
-          controller.scrollToIndex(index,
-              preferPosition: AutoScrollPosition.middle,
-              duration: Duration(milliseconds: 600));
+          if(!dragTargetVisible){
+            controller.scrollToIndex(index,
+                preferPosition: AutoScrollPosition.middle,
+                duration: Duration(milliseconds: 600));
+          }
         },
       ),
     );
